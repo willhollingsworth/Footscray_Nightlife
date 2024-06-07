@@ -212,8 +212,10 @@ document.addEventListener('DOMContentLoaded', function() {
     L.geoJSON(geojsonFeature, {
         onEachFeature: onEachFeature ,
         style: function(feature) {
-            return {color: "#ff0000"}; // hardcode to red
-            // return {color: feature.properties.color};
+            // switch (feature.properties.party) {
+                // case 'Republican': return {color: "#ff0000"};
+            // return {color: "#ff0000"}; // hardcode to red
+            return {color: feature.properties.stroke};
             }    
         }
 ).addTo(map);
