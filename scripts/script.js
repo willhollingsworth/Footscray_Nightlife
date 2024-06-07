@@ -1,7 +1,12 @@
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
     if (feature.properties) {
-        layer.bindPopup(feature.properties.name);
+        layer.bindPopup(
+            "Name : " + feature.properties.name + "<br>" +
+            "Type : " + feature.properties.type + "<br>" +
+            "State : " + feature.properties.state
+        
+        );
     }
 }
 document.addEventListener('DOMContentLoaded', function() {
