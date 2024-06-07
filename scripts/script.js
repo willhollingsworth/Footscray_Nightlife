@@ -1,3 +1,9 @@
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties) {
+        layer.bindPopup(feature.properties.name);
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('map').setView([-32.589161,  119.532889], 6);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -198,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ],
     "type": "FeatureCollection"
 };
-    
-    L.geoJSON(geojsonFeature).addTo(map);
+    L.geoJSON(geojsonFeature, {
+        onEachFeature: onEachFeature
+    }).addTo(map);
 
 });
