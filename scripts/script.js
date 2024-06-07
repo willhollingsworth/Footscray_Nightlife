@@ -210,7 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
     "type": "FeatureCollection"
 };
     L.geoJSON(geojsonFeature, {
-        onEachFeature: onEachFeature
-    }).addTo(map);
+        onEachFeature: onEachFeature ,
+        style: function(feature) {
+            return {color: "#ff0000"}; // hardcode to red
+            // return {color: feature.properties.color};
+            }    
+        }
+).addTo(map);
 
 });
