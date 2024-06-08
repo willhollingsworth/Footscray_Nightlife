@@ -10,7 +10,7 @@ function onEachFeature(feature, layer) {
 }
 
 async function loadSampleData() {
-    const sampleDataPath = "../data/sample.geojson";
+    const sampleDataPath = "./data/sample.geojson";
     const request = new Request(sampleDataPath);
     const response = await fetch(request);
     const geojsonData = await response.json();
