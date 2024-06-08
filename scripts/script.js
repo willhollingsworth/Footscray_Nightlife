@@ -32,12 +32,12 @@ function createOverlay(){
 
 function createIcon(feature){
     let path = ''
-    switch (feature.properties["marker-size"]){
-        case "large" : 
-            path = './icons/map-marker.svg'
+    switch (feature.properties.type){
+        case "City" : 
+            path = './icons/city-marker.svg'
             break;
-        case "medium" : 
-            path = './icons/restaurant-marker.svg'
+        case "Town" : 
+            path = './icons/town-marker.svg'
             break;
         default : 
             path = './icons/coffee-marker.svg'
