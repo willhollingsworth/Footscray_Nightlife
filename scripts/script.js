@@ -17,6 +17,20 @@ async function loadSampleData() {
     return geojsonData
 }
 
+function createOverlay(){
+    let overlay   = L.Control.extend({
+        onAdd: function() {
+            
+        var text = L.DomUtil.create('div');
+        text.id = "overlay";
+        text.innerHTML = "<h2>" + "Leaflet Testing" + "</h2>"
+        return text;
+        },
+    
+    });
+    return overlay;
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     var map = L.map('map').setView([-32.589161,  119.532889], 6);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -33,4 +47,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             }    
         }
 ).addTo(map);
+overlay = createOverlay();
+new overlay({ position: 'topleft' }).addTo(map);
 });
