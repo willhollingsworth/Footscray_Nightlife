@@ -37,15 +37,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+
     geojsonData = await loadSampleData()
+
     L.geoJSON(geojsonData, {
         onEachFeature: onEachFeature ,
         style: function(feature) {
             // switch (feature.properties.party) {
                 // case 'Republican': return {color: "#ff0000"};
             return {color: feature.properties.stroke};
-            }    
-        }
+        },
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 8,
+                fillColor: feature.properties['marker-color'],
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+        }  
+    }
 ).addTo(map);
 overlay = createOverlay();
 new overlay({ position: 'topleft' }).addTo(map);
