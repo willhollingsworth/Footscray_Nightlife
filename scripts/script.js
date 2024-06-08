@@ -46,7 +46,7 @@ function createIcon(feature){
         iconUrl: path,
         iconSize: [40, 100],
         iconAnchor: [20, 65],
-        popupAnchor: [-3, -76]
+        popupAnchor: [0, -35]
     });
     return myIcon
 }
