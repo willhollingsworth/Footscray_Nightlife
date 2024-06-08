@@ -20,7 +20,6 @@ async function loadSampleData() {
 function createOverlay(){
     let overlay   = L.Control.extend({
         onAdd: function() {
-            
         var text = L.DomUtil.create('div');
         text.id = "overlay";
         text.innerHTML = "<h2>" + "Leaflet Testing" + "</h2>"
@@ -29,6 +28,27 @@ function createOverlay(){
     
     });
     return overlay;
+}
+
+function createIcon(feature){
+    let path = ''
+    switch (feature.properties["marker-size"]){
+        case "large" : 
+            path = './icons/map-marker.svg'
+            break;
+        case "medium" : 
+            path = './icons/restaurant-marker.svg'
+            break;
+        default : 
+            path = './icons/coffee-marker.svg'
+        }
+    var myIcon = L.icon({
+        iconUrl: path,
+        iconSize: [40, 100],
+        iconAnchor: [20, 65],
+        popupAnchor: [-3, -76]
+    });
+    return myIcon
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -48,13 +68,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             return {color: feature.properties.stroke};
         },
         pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 8,
-                fillColor: feature.properties['marker-color'],
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
+            return L.marker(latlng, {
+                title : feature.properties.name,
+                icon : createIcon(feature)
             });
         }  
     }
