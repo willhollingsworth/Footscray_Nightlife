@@ -51,6 +51,15 @@ function createIcon(feature){
     return myIcon
 }
 
+function createStyle(feature){
+    let style = {}
+    style.color =  feature.properties.stroke
+    style.weight = feature.properties["stroke-width"]
+    style.opacity = feature.properties["stroke-opacity"]
+    style.fillColor = feature.properties["fill"]
+    style.fillOpacity= feature.properties["fill-opacity"]
+    return style
+}
 document.addEventListener('DOMContentLoaded', async function() {
     var map = L.map('map').setView([-32.589161,  119.532889], 6);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -63,9 +72,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     L.geoJSON(geojsonData, {
         onEachFeature: onEachFeature ,
         style: function(feature) {
-            // switch (feature.properties.party) {
-                // case 'Republican': return {color: "#ff0000"};
-            return {color: feature.properties.stroke};
+            return createStyle(feature)
         },
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
