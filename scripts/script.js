@@ -105,7 +105,7 @@ function createStyle(feature){
     });
 
     var featureSelection = {
-        "Sample GeJSON" : geojsonLeaflet,
+        "Sample GeoJSON" : geojsonLeaflet,
     };
 
     // setup map 
