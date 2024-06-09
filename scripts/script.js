@@ -1,4 +1,3 @@
-
 function onEachFeature(feature, layer) {
     if (feature.properties) {
         layer.bindPopup(
@@ -25,7 +24,6 @@ function createOverlay(){
         text.innerHTML = "<h2>" + "Leaflet Testing" + "</h2>"
         return text;
         },
-    
     });
     return overlay;
 }
@@ -79,39 +77,46 @@ function createStyle(feature){
         attribution: 'Map data: © Cartodb'
     });
 
-
-    
-    var baseMaps = {
+    var baseMapsSelection = {
         "Open Street Map - Standard": osm,
         "Open Street Map - Humanitarian Style": osmHOT,
         "Open Topo Map": openTopoMap,
         "Carto DB - Light": cartoDb,
     };           
-    // setup map 
-    var map = L.map('map',{
-        center: [-32.589161, 119.532889],
-        zoom: 6,
-        layers: [osm]
-    });
-    // create button in the top right for loading different base maps and other options
-    var layerControl = L.control.layers(baseMaps).addTo(map);
 
     //load in sample geojson from separate file
     geojsonData = await loadSampleData()
 
-    // load geojson into the map
-    L.geoJSON(geojsonData, {
+    // convert geojson to a leaflet element
+    var geojsonLeaflet = L.geoJSON(geojsonData, {
+        // setup popup box logic
         onEachFeature: onEachFeature ,
+        //setup styles
         style: function(feature) {
             return createStyle(feature)
         },
+        //setup point styles including icon selection
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
                 title : feature.properties.name,
                 icon : createIcon(feature)
             });
         }  
-    }).addTo(map);
+    });
+
+    var featureSelection = {
+        "Sample GeJSON" : geojsonLeaflet,
+    };
+
+    // setup map 
+    var map = L.map('map',{
+        center: [-32.589161, 119.532889],
+        zoom: 6,
+        layers: [osm, geojsonLeaflet]
+    });
+
+    // create button in the top right for loading different base maps and features
+    var layerControl = L.control.layers(baseMapsSelection, featureSelection).addTo(map);
 
     // create title overlay
     overlay = createOverlay();
