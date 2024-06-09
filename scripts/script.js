@@ -74,10 +74,18 @@ function createStyle(feature){
         maxZoom: 19,
         attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
     });
+    var cartoDb = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data: © Cartodb'
+    });
+
+
+    
     var baseMaps = {
         "Open Street Map - Standard": osm,
         "Open Street Map - Humanitarian Style": osmHOT,
         "Open Topo Map": openTopoMap,
+        "Carto DB - Light": cartoDb,
     };           
     // setup map 
     var map = L.map('map',{
