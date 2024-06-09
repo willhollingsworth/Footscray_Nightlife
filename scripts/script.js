@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     geojsonData = await loadSampleData()
 
     // convert geojson to a leaflet element
-    var geojsonLeaflet = L.geoJSON(geojsonData, {
+    var sampleLayer = L.geoJSON(geojsonData, {
         // setup popup box logic
         onEachFeature: onEachFeature ,
         //setup styles
@@ -111,20 +111,39 @@ document.addEventListener('DOMContentLoaded', async function() {
         }  
     });
 
+    // filter the sample features into categories
+    var samplePointsLayer = L.featureGroup(),
+        sampleLinesLayer = L.featureGroup(), 
+        samplePolyLayer = L.featureGroup();
+    for (let i in sampleLayer._layers) {
+        let layer = sampleLayer._layers[i];        
+        if (layer.feature.geometry.type == "Point") {
+            layer.addTo(samplePointsLayer);
+        } else if (layer.feature.geometry.type == "LineString") {
+            layer.addTo(sampleLinesLayer);
+        } else if (layer.feature.geometry.type == "Polygon") {
+            layer.addTo(samplePolyLayer);
+        }
+    }   
+    
+    // build menu object for sample features
     var featureSelection = {
-        "Sample GeoJSON" : geojsonLeaflet,
+        "Sample GeoJSON - All" : sampleLayer,
+        "Sample GeoJSON - Points" : samplePointsLayer,
+        "Sample GeoJSON - Lines" : sampleLinesLayer,
+        "Sample GeoJSON - Polys" : samplePolyLayer,
     };
 
     // setup map 
     var map = L.map('map',{
         center: [-32.589161, 119.532889],
         zoom: 6,
-        layers: [osm, geojsonLeaflet]
+        layers: [osm, sampleLayer]
     });
 
     // create button in the top right for loading different base maps and features
     var layerControl = L.control.layers(baseMapsSelection, featureSelection).addTo(map);
-
+    
     // create title overlay
     overlay = createOverlay();
     new overlay({ position: 'topleft' }).addTo(map);
