@@ -61,29 +61,37 @@ function createStyle(feature){
     return style
     }
     document.addEventListener('DOMContentLoaded', async function() {
-      
+    // setup base maps 
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            })
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
     var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'});
+        attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+    });
+    var openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+    });
     var baseMaps = {
-        "OpenStreetMap": osm,
-        "OpenStreetMap.HOT": osmHOT
+        "Open Street Map - Standard": osm,
+        "Open Street Map - Humanitarian Style": osmHOT,
+        "Open Topo Map": openTopoMap,
     };           
-
+    // setup map 
     var map = L.map('map',{
         center: [-32.589161, 119.532889],
         zoom: 6,
         layers: [osm]
     });
-
+    // create button in the top right for loading different base maps and other options
     var layerControl = L.control.layers(baseMaps).addTo(map);
 
+    //load in sample geojson from separate file
     geojsonData = await loadSampleData()
 
+    // load geojson into the map
     L.geoJSON(geojsonData, {
         onEachFeature: onEachFeature ,
         style: function(feature) {
@@ -95,8 +103,9 @@ function createStyle(feature){
                 icon : createIcon(feature)
             });
         }  
-    }
-).addTo(map);
-overlay = createOverlay();
-new overlay({ position: 'topleft' }).addTo(map);
+    }).addTo(map);
+
+    // create title overlay
+    overlay = createOverlay();
+    new overlay({ position: 'topleft' }).addTo(map);
 });
