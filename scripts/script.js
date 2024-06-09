@@ -57,8 +57,9 @@ function createStyle(feature){
     style.fillColor = feature.properties["fill"]
     style.fillOpacity= feature.properties["fill-opacity"]
     return style
-    }
-    document.addEventListener('DOMContentLoaded', async function() {
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
     // setup base maps 
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -68,6 +69,10 @@ function createStyle(feature){
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
     });
+    var osmCycling = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
     var openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
@@ -76,10 +81,12 @@ function createStyle(feature){
         maxZoom: 19,
         attribution: 'Map data: © Cartodb'
     });
+ 
 
     var baseMapsSelection = {
         "Open Street Map - Standard": osm,
         "Open Street Map - Humanitarian Style": osmHOT,
+        "Open Street Map - Cycling": osmCycling,
         "Open Topo Map": openTopoMap,
         "Carto DB - Light": cartoDb,
     };           
@@ -103,6 +110,8 @@ function createStyle(feature){
             });
         }  
     });
+
+    geojsonLeaflet.f
 
     var featureSelection = {
         "Sample GeoJSON" : geojsonLeaflet,
