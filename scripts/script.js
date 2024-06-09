@@ -111,8 +111,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         }  
     });
 
-    geojsonLeaflet.f
-
     var featureSelection = {
         "Sample GeoJSON" : geojsonLeaflet,
     };
