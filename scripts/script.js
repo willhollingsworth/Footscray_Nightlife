@@ -59,13 +59,28 @@ function createStyle(feature){
     style.fillColor = feature.properties["fill"]
     style.fillOpacity= feature.properties["fill-opacity"]
     return style
-}
-document.addEventListener('DOMContentLoaded', async function() {
-    var map = L.map('map').setView([-32.589161,  119.532889], 6);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    }
+    document.addEventListener('DOMContentLoaded', async function() {
+      
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            })
+    var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'});
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "OpenStreetMap.HOT": osmHOT
+    };           
+
+    var map = L.map('map',{
+        center: [-32.589161, 119.532889],
+        zoom: 6,
+        layers: [osm]
+    });
+
+    var layerControl = L.control.layers(baseMaps).addTo(map);
 
     geojsonData = await loadSampleData()
 
