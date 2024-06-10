@@ -1,4 +1,5 @@
 function onEachFeature(feature, layer) {
+    // bind popup and tooltips to each feature MARK:Bind Popups
     if (feature.properties) {
         layer.bindPopup(
             "Name: " + feature.properties.name + "<br>" +
@@ -7,18 +8,19 @@ function onEachFeature(feature, layer) {
         );
     }
     if (feature.geometry.type == "Point") {
-    layer.bindTooltip(
-        feature.properties.name,{
-        direction: "top",
-        offset: [0,-18],
-        permanent : true,
-        className: "labels",
+        // bind permanent tooltips to point features MARK:Bind labels
+        layer.bindTooltip(
+            feature.properties.name,{
+            direction: "top",
+            offset: [0,-18],
+            permanent : true,
+            className: "labels",
         }).openTooltip();
     }
 }
 
 async function loadSampleData() {
-    // load the sample geojson from a file and return it as a json object
+    // load the sample geojson from a file and return it as a json object MARK: Load JSON
     const sampleDataPath = "./data/sample.geojson";
     const request = new Request(sampleDataPath);
     const response = await fetch(request);
@@ -27,7 +29,7 @@ async function loadSampleData() {
 }
 
 function createOverlay(){
-    // create a title overlay to display a heading
+    // create a title overlay to display a heading MARK: Title Overlay
     let overlay   = L.Control.extend({
         onAdd: function() {
         var text = L.DomUtil.create('div');
@@ -40,6 +42,7 @@ function createOverlay(){
 }
 
 function createIcon(feature){
+    // icon creation logic MARK: Create Icon
     let path = ''
     switch (feature.properties.type){
         case "City" : 
@@ -61,6 +64,7 @@ function createIcon(feature){
 }
 
 function createStyle(feature){
+    // setup styles for features MARK: Feature styles
     let style = {}
     style.color =  feature.properties.stroke
     style.weight = feature.properties["stroke-width"]
@@ -71,7 +75,7 @@ function createStyle(feature){
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // setup base maps 
+    // setup base maps  MARK: Basemaps
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -93,7 +97,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         attribution: 'Map data: © Cartodb'
     });
  
-
     var baseMapsSelection = {
         "Open Street Map - Standard": osm,
         "Open Street Map - Humanitarian Style": osmHOT,
@@ -102,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         "Carto DB - Light": cartoDb,
     };           
 
-    //load in sample geojson from separate file
+    //load in sample geojson from separate file MARK:GeoJSON
     geojsonData = await loadSampleData()
 
     // convert geojson to a leaflet element
@@ -122,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }  
     });
 
-    // filter the sample features into categories
+    // filter the sample features into categories MARK:Geojson filtering
     var samplePointsLayer = L.featureGroup(),
         sampleLinesLayer = L.featureGroup(), 
         samplePolyLayer = L.featureGroup();
@@ -137,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }   
     
-    // build menu object for sample features
+    // build menu object for sample features MARK: Feature selection
     var featureSelection = {
         "Sample GeoJSON - All" : sampleLayer,
         "Sample GeoJSON - Points" : samplePointsLayer,
@@ -145,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         "Sample GeoJSON - Polys" : samplePolyLayer,
     };
 
-    // setup map 
+    // setup map MARK: Map setup
     var map = L.map('map',{
         center: [-32.589161, 119.532889],
         zoom: 6,
@@ -153,9 +156,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // create button in the top right for loading different base maps and features
+    // MARK: Create controls layer
     var layerControl = L.control.layers(baseMapsSelection, featureSelection).addTo(map);
     
-    // create title overlay
+    // create title overlay MARK:create title overlay
     overlay = createOverlay();
     new overlay({ position: 'topleft' }).addTo(map);
 });
