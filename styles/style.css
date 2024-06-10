@@ -14,3 +14,16 @@ position: relative;
     height: 100vh;
     width: 100vw;
 }
+.labels {
+    text-shadow: 1px 0 1px white, -1px 0 1px white;
+}
+/* remove the labels arrows */
+.leaflet-tooltip-top::before {
+    background-color: transparent;
+    border-color: transparent;
+}
+.leaflet-tooltip {
+    background-color: transparent;
+    border: 0px;
+    box-shadow: none;
+}

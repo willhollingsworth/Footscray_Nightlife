@@ -5,10 +5,18 @@ function onEachFeature(feature, layer) {
             "Type: " + feature.properties.type + "<br>" +
             "State: " + feature.properties.state
         );
+        layer.bindTooltip(
+            feature.properties.name,{
+            direction: "top",
+            offset: [0,-15],
+            permanent : true,
+            className: "labels",
+        }).openTooltip();
     }
 }
 
 async function loadSampleData() {
+    // load the sample geojson from a file and return it as a json object
     const sampleDataPath = "./data/sample.geojson";
     const request = new Request(sampleDataPath);
     const response = await fetch(request);
@@ -17,6 +25,7 @@ async function loadSampleData() {
 }
 
 function createOverlay(){
+    // create a title overlay to display a heading
     let overlay   = L.Control.extend({
         onAdd: function() {
         var text = L.DomUtil.create('div');
