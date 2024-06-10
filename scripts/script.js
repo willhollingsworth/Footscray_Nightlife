@@ -5,12 +5,14 @@ function onEachFeature(feature, layer) {
             "Type: " + feature.properties.type + "<br>" +
             "State: " + feature.properties.state
         );
-        layer.bindTooltip(
-            feature.properties.name,{
-            direction: "top",
-            offset: [0,-15],
-            permanent : true,
-            className: "labels",
+    }
+    if (feature.geometry.type == "Point") {
+    layer.bindTooltip(
+        feature.properties.name,{
+        direction: "top",
+        offset: [0,-18],
+        permanent : true,
+        className: "labels",
         }).openTooltip();
     }
 }
