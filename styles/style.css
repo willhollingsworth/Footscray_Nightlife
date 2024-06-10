@@ -27,3 +27,16 @@ position: relative;
     border: 0px;
     box-shadow: none;
 }
+
+/* popup box styling */
+.popup {
+    position: fixed;
+    bottom: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    margin : 0px;
+    }
+    
+.leaflet-popup-content-wrapper{
+    border-radius: 0% !important;
+}

@@ -4,17 +4,23 @@ function onEachFeature(feature, layer) {
         layer.bindPopup(
             "Name: " + feature.properties.name + "<br>" +
             "Type: " + feature.properties.type + "<br>" +
-            "State: " + feature.properties.state
+            "State: " + feature.properties.state,
+            {
+                pane: 'fixed',
+                className: 'popup',
+                closeButton: false,
+            }
         );
     }
     if (feature.geometry.type == "Point") {
         // bind permanent tooltips to point features MARK:Bind labels
         layer.bindTooltip(
-            feature.properties.name,{
-            direction: "top",
-            offset: [0,-18],
-            permanent : true,
-            className: "labels",
+            feature.properties.name,
+            {
+                direction: "top",
+                offset: [0,-18],
+                permanent : true,
+                className: "labels",
         }).openTooltip();
     }
 }
@@ -158,7 +164,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // create button in the top right for loading different base maps and features
     // MARK: Create controls layer
     var layerControl = L.control.layers(baseMapsSelection, featureSelection).addTo(map);
-    
+
+    // create a fixed pane for absolute popup box positioning
+    var pane = map.createPane('fixed', document.getElementById('map'));
+
     // create title overlay MARK:create title overlay
     overlay = createOverlay();
     new overlay({ position: 'topleft' }).addTo(map);
