@@ -80,7 +80,7 @@ function createStyle(feature){
     return style
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
+function loadBaseMaps(){
     // setup base maps  MARK: Basemaps
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -109,8 +109,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         "Open Street Map - Cycling": osmCycling,
         "Open Topo Map": openTopoMap,
         "Carto DB - Light": cartoDb,
-    };           
+    };    
 
+    return [osm, baseMapsSelection]
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    
+    // load all basemaps and set a default basemap
+    var [defaultMap, baseMapsSelection] = loadBaseMaps()
+    
     //load in sample geojson from separate file MARK:GeoJSON
     locationData = await loadSampleData("./data/Nightlife_Locations.geojson")
 
@@ -146,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     var map = L.map('map',{
         center: [-37.8, 144.9],
         zoom: 14,
-        layers: [osm, locationLayer]
+        layers: [defaultMap, locationLayer]
     });
 
     // create button in the top right for loading different base maps and features
