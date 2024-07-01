@@ -39,7 +39,7 @@ function createOverlay(){
         onAdd: function() {
         var text = L.DomUtil.create('div');
         text.id = "overlay";
-        text.innerHTML = "<h2>" + "Leaflet Testing" + "</h2>"
+        text.innerHTML = "<h2>" + "Footscray Nightlife" + "</h2>"
         return text;
         },
     });
