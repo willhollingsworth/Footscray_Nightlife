@@ -25,7 +25,8 @@ function onEachFeature(feature, layer) {
 }
 
 async function loadSampleData(location) {
-    // load the sample geojson from a file and return it as a json object MARK: Load JSON
+    // given a relative geojson location, load that data and return it as a json object 
+    // MARK: Load JSON
     const sampleDataPath = location;
     const request = new Request(sampleDataPath);
     const response = await fetch(request);
