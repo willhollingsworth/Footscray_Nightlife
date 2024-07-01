@@ -114,7 +114,7 @@ function loadBaseMaps(){
     return [osm, baseMapsSelection]
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
+async function loadLeaflet(){
     
     // load all basemaps and set a default basemap
     var [defaultMap, baseMapsSelection] = loadBaseMaps()
@@ -167,4 +167,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // create title overlay MARK:create title overlay
     overlay = createOverlay();
     new overlay({ position: 'topleft' }).addTo(map);
-});
+};
+
+await loadLeaflet()
