@@ -110,12 +110,13 @@ function loadBaseMaps(){
         "Open Topo Map": openTopoMap,
         "Carto DB - Light": cartoDb,
     };    
-
+    // return the default map + all base maps ready for the toolbar
     return [osm, baseMapsSelection]
 }
 
 async function loadLeaflet(){
-    
+    // main leaflet logic
+    //
     // load all basemaps and set a default basemap
     var [defaultMap, baseMapsSelection] = loadBaseMaps()
     
