@@ -6,5 +6,6 @@
         "SRTM",
         "topleft",
         "Topo"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }

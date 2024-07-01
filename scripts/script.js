@@ -2,9 +2,8 @@ function onEachFeature(feature, layer) {
     // bind popup and tooltips to each feature MARK:Bind Popups
     if (feature.properties) {
         layer.bindPopup(
-            "Name: " + feature.properties.name + "<br>" +
-            "Type: " + feature.properties.type + "<br>" +
-            "State: " + feature.properties.state,
+            "Name: " + feature.properties.Name + "<br>" +
+            "Type: " + feature.properties.Type,
             {
                 pane: 'fixed',
                 className: 'popup',
@@ -15,7 +14,7 @@ function onEachFeature(feature, layer) {
     if (feature.geometry.type == "Point") {
         // bind permanent tooltips to point features MARK:Bind labels
         layer.bindTooltip(
-            feature.properties.name,
+            feature.properties.Name,
             {
                 direction: "top",
                 offset: [0,-18],
@@ -25,9 +24,9 @@ function onEachFeature(feature, layer) {
     }
 }
 
-async function loadSampleData() {
+async function loadSampleData(location) {
     // load the sample geojson from a file and return it as a json object MARK: Load JSON
-    const sampleDataPath = "./data/sample.geojson";
+    const sampleDataPath = location;
     const request = new Request(sampleDataPath);
     const response = await fetch(request);
     const geojsonData = await response.json();
@@ -112,10 +111,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     };           
 
     //load in sample geojson from separate file MARK:GeoJSON
-    geojsonData = await loadSampleData()
+    locationData = await loadSampleData("./data/Nightlife_Locations.geojson")
 
     // convert geojson to a leaflet element
-    var sampleLayer = L.geoJSON(geojsonData, {
+    var locationLayer = L.geoJSON(locationData, {
         // setup popup box logic
         onEachFeature: onEachFeature ,
         //setup styles
@@ -125,40 +124,28 @@ document.addEventListener('DOMContentLoaded', async function() {
         //setup point styles including icon selection
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
-                title : feature.properties.name,
+                title : feature.properties.Name,
                 icon : createIcon(feature)
             });
         }  
     });
+    //load in sample geojson from separate file MARK:GeoJSON
+    boundaryData = await loadSampleData("./data/Footscray_Boundary.geojson")
 
-    // filter the sample features into categories MARK:Geojson filtering
-    var samplePointsLayer = L.featureGroup(),
-        sampleLinesLayer = L.featureGroup(), 
-        samplePolyLayer = L.featureGroup();
-    for (let i in sampleLayer._layers) {
-        let layer = sampleLayer._layers[i];        
-        if (layer.feature.geometry.type == "Point") {
-            layer.addTo(samplePointsLayer);
-        } else if (layer.feature.geometry.type == "LineString") {
-            layer.addTo(sampleLinesLayer);
-        } else if (layer.feature.geometry.type == "Polygon") {
-            layer.addTo(samplePolyLayer);
-        }
-    }   
-    
+    // convert geojson to a leaflet element
+    var boundaryLayer = L.geoJSON(boundaryData);
+
     // build menu object for sample features MARK: Feature selection
     var featureSelection = {
-        "Sample GeoJSON - All" : sampleLayer,
-        "Sample GeoJSON - Points" : samplePointsLayer,
-        "Sample GeoJSON - Lines" : sampleLinesLayer,
-        "Sample GeoJSON - Polys" : samplePolyLayer,
+        "Nightlife Locations" : locationLayer,
+        "Boundary Layer" : boundaryLayer,
     };
 
     // setup map MARK: Map setup
     var map = L.map('map',{
-        center: [-32.589161, 119.532889],
-        zoom: 6,
-        layers: [osm, sampleLayer]
+        center: [-37.8, 144.9],
+        zoom: 14,
+        layers: [osm, locationLayer]
     });
 
     // create button in the top right for loading different base maps and features
