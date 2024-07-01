@@ -169,4 +169,4 @@ async function loadLeaflet(){
     new overlay({ position: 'topleft' }).addTo(map);
 };
 
-await loadLeaflet()
+loadLeaflet()
