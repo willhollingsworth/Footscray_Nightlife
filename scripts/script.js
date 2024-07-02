@@ -1,13 +1,29 @@
+function buildToolbarContent(feature){
+    // build the content of the attribute toolbar
+    // MARK: Toolbar Content
+    let content = ""
+    content +=  "<div id=\"image_title\"></div>"
+    content +=  "<div id=\"title_bar\">"
+    content +=  "<h2>" + feature.properties.Name + "</h2> <br>"
+    content +=  "</div>"
+    content +=  "<h4>Description</h4>" 
+    content +=  feature.properties.description            
+    content +=  "<br><br><br>"           
+    content +=  "<h4>Coordinates</h4>" 
+    content +=  feature.geometry.coordinates            
+    return content
+}
+
 function onEachFeature(feature, layer) {
     // bind popup and tooltips to each feature MARK:Bind Popups
     if (feature.properties) {
         layer.bindPopup(
-            "Name: " + feature.properties.Name + "<br>" +
-            "Type: " + feature.properties.Type,
+            buildToolbarContent(feature),
             {
                 pane: 'fixed',
                 className: 'popup',
                 closeButton: false,
+                autoPan: false,
             }
         );
     }
@@ -164,6 +180,8 @@ async function loadLeaflet(){
 
     // create a fixed pane for absolute popup box positioning
     var pane = map.createPane('fixed', document.getElementById('map'));
+    // set properties of pane
+    map.getPane('fixed').style.zIndex = 1000
 
     // create title overlay MARK:create title overlay
     overlay = createOverlay();

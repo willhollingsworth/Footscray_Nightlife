@@ -35,8 +35,31 @@ position: relative;
     left: 0 !important;
     transform: none !important;
     margin : 0px;
-    }
-    
+}
+
+.leaflet-popup-content {
+    margin: 0% !important;
+}
 .leaflet-popup-content-wrapper{
     border-radius: 0% !important;
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    top: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+    overflow: hidden;
+}
+#image_title {
+    background-image: url("../images/footscray_hotel.jpg");
+    background-position: center;
+    background-size: cover;
+    height: 200px;
+}
+#title_bar{
+display: grid;
+align-items: center;
+background-color: #db4437;
+color: #fff;
 }
