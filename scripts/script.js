@@ -1,32 +1,5 @@
-function buildToolbarContent(feature){
-    // build the content of the attribute toolbar
-    // MARK: Toolbar Content
-    let content = ""
-    content +=  "<div id=\"image_title\"></div>"
-    content +=  "<div id=\"title_bar\">"
-    content +=  "<h2>" + feature.properties.Name + "</h2> <br>"
-    content +=  "</div>"
-    content +=  "<h4>Description</h4>" 
-    content +=  feature.properties.description            
-    content +=  "<br><br><br>"           
-    content +=  "<h4>Coordinates</h4>" 
-    content +=  feature.geometry.coordinates            
-    return content
-}
 
 function onEachFeature(feature, layer) {
-    // bind popup and tooltips to each feature MARK:Bind Popups
-    if (feature.properties) {
-        layer.bindPopup(
-            buildToolbarContent(feature),
-            {
-                pane: 'fixed',
-                className: 'popup',
-                closeButton: false,
-                autoPan: false,
-            }
-        );
-    }
     if (feature.geometry.type == "Point") {
         // bind permanent tooltips to point features MARK:Bind labels
         layer.bindTooltip(
@@ -37,7 +10,9 @@ function onEachFeature(feature, layer) {
                 permanent : true,
                 className: "labels",
         }).openTooltip();
-    }
+        // bind sidebar logic
+        layer.on("click", clickedFeature )
+    }        
 }
 
 async function loadSampleData(location) {
@@ -186,6 +161,34 @@ async function loadLeaflet(){
     // create title overlay MARK:create title overlay
     overlay = createOverlay();
     new overlay({ position: 'topleft' }).addTo(map);
+
+    map.on('click', hideSidebar);
 };
+
+function clickedFeature() {
+    updateSidebarContent(this)
+    showSidebar()
+}
+
+function updateSidebarContent(element) {
+    // MARK: Sidebar logic
+    // set title of sidebar
+    let title = document.getElementById('sidebar-title');
+    title.innerHTML = element.feature.properties.Name
+    // set description
+    let description = document.getElementById('sidebar-description');
+    description.innerHTML = '<h4>description</h4>'
+    description.innerHTML += `<p>${element.feature.properties.description}</p>`
+}
+
+function showSidebar() {
+    let sidebar = document.getElementById('sidebar')
+    sidebar.style.left = '0%'
+}
+
+function hideSidebar() {
+    let sidebar = document.getElementById('sidebar')
+    sidebar.style.left = '-30%'
+}
 
 loadLeaflet()

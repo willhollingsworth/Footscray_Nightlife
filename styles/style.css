@@ -27,39 +27,42 @@ position: relative;
     border: 0px;
     box-shadow: none;
 }
-
-/* popup box styling */
-.popup {
-    position: fixed;
-    bottom: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    margin : 0px;
-}
-
-.leaflet-popup-content {
-    margin: 0% !important;
-}
-.leaflet-popup-content-wrapper{
-    border-radius: 0% !important;
+#sidebar{
+    position: absolute;
+    width: 30%;
     height: 100%;
-    width: 20%;
-    position: fixed;
+    background: white;
     top: 0;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center;
+    left: -30%;
+    z-index: 1000;
     overflow: hidden;
+    transition: left 800ms;
 }
-#image_title {
+#sidebar-top-image{
+    background: grey;
     background-image: url("../images/footscray_hotel.jpg");
     background-position: center;
     background-size: cover;
     height: 200px;
+    width: 100%;
 }
-#title_bar{
-display: grid;
-align-items: center;
-background-color: #db4437;
-color: #fff;
+#sidebar-title{
+    display: flex;
+    font-size: 1.8em; 
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #db4437;
+    color: white;
+    height : 50px;
+}
+#sidebar-description{
+    padding: 5px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: start;
+}
+#sidebar-description * {
+    margin: 0;
 }
